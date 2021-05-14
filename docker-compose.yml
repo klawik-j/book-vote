@@ -1,0 +1,26 @@
+version: "3"
+services: 
+
+  book_db:
+    image: postgres:latest
+    restart: unless-stopped
+    container_name: book_postgres
+    env_file: 
+      - .env
+    
+  book_back:
+    build: ./code
+    container_name: book_back
+    restart: unless-stopped
+    ports: 
+      - "${DJANGO_PORT}:8080"
+    env_file: 
+      - .env
+    volumes: 
+      - ./code:/code
+    depends_on: 
+      - book_db
+    links:
+      - book_db:book_db
+    entrypoint: "bash /code/docker-entrypoint.sh"
+    command: "runserver 0.0.0.0:8080"
