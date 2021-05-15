@@ -14,3 +14,8 @@ class BookSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'url': {'lookup_field': 'id'}
         }
+    
+    def validate(self, attrs):
+        instance = Book(**attrs)
+        instance.clean()
+        return attrs
