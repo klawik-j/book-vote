@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from api.validators import validate_book
 
@@ -24,3 +25,16 @@ class Book(models.Model):
         self.author = new_author
         self.title = new_title
         super(Book, self).save(*args, **kwargs)
+
+class Review(models.Model):
+    """Review model for :models:`api.Car`.
+    Validates `review` to check if value is beween 0 and 5.
+    """
+    book = models.ForeignKey(Book,
+                            on_delete=models.CASCADE,
+                            related_name="reviews")
+    review = models.IntegerField(_("Ratin from 0 to 5"),
+                                validators=[
+                                    MinValueValidator(0),
+                                    MaxValueValidator(5)
+                                ])

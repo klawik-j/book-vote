@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Book
+from api.models import Book, Review
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -8,8 +8,8 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = [  'id',
                     'author',
-                     'title',
-                     ]
+                    'title',
+                    ]
         lookup_field = 'id'
         extra_kwargs = {
             'url': {'lookup_field': 'id'}
@@ -19,3 +19,11 @@ class BookSerializer(serializers.ModelSerializer):
         instance = Book(**attrs)
         instance.clean()
         return attrs
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = [  'id',
+                    'book',
+                    'review',
+                    ]
