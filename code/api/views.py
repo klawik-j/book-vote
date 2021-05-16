@@ -11,8 +11,14 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     lookup_field = 'id'
 
-class Review(   mixins.CreateModelMixin,
-                viewsets.GenericViewSet,
-                ):
+class ReviewViewSet(mixins.CreateModelMixin,
+                    viewsets.GenericViewSet,
+                    ):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+class PopularBooksViewSet(  mixins.ListModelMixin,
+                            viewsets.GenericViewSet,
+                        ):
+    queryset = Book.most_popular()
+    serializer_class = BookSerializer

@@ -25,6 +25,19 @@ class Book(models.Model):
         self.author = new_author
         self.title = new_title
         super(Book, self).save(*args, **kwargs)
+    
+    def average_rating(self):
+        """
+        Return average rating based on :models:`Review`.
+        """
+        return  self.reviews.all().aggregate(
+                models.Avg('review'))['review__avg']
+
+    @staticmethod
+    def most_popular(n=5):
+        books = Book.objects.annotate(review_number=models.Count('reviews'))
+        books_sorted = books.order_by('-review_number')
+        return books_sorted[:n]
 
 class Review(models.Model):
     """Review model for :models:`api.Car`.
