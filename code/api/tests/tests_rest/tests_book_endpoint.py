@@ -64,3 +64,28 @@ class BookEndpointTestCase(TestCase):
     def test_delete_code(self):
         response = client.delete(self.url)
         self.assertEqual(response.status_code, 405)
+
+class BookDetailEndpointTestCase(TestCase):
+
+    def setUp(self):
+        self.book = Book.objects.create(author='J.R.R. Tolkien', title='The Hobbit')
+        self.url = reverse('book-detail',
+                            kwargs={'id': self.book.id})
+
+    def test_get_code(self):
+        response = client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_data(self):
+        response = client.get(self.url)
+        data = response.data
+        self.assertCountEqual(data.keys(),
+                             ['id', 'author', 'title', 'average_rating'])
+        self.assertEqual(data['author'], 'J.R.R. Tolkien')
+        self.assertEqual(data['title'], 'The Hobbit')
+
+    def test_delete(self):
+        response = client.delete(self.url)
+        self.assertEqual(response.status_code, 204)
+    
+    
