@@ -35,7 +35,7 @@ class BookReviewTestCase(TestCase):
         ]
         [book.save() for book in self.books]
 
-        #Create a dictionary contain random number of random reviews bound to book
+        #Create a dictionary contain n number of random reviews bound to book
         self.reviews = dict()
         for n, book in enumerate(self.books, start=1):
             self.reviews[str(book)] = {
@@ -70,7 +70,7 @@ class BookReviewTestCase(TestCase):
     def test_popular(self):
         popular = Book.most_popular()
         self.assertEqual(len(popular), 5)
-        self.assertListEqual(list(popular), self.books[::-1])
+        self.assertListEqual(list(popular), list(reversed(self.books)))
         self.assertEqual(type(popular), type(Book.objects.all()))
 
     
