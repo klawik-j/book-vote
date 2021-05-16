@@ -37,29 +37,28 @@ class BookReviewTestCase(TestCase):
 
         #Create a dictionary contain random number of random reviews bound to book
         self.reviews = dict()
-        for book in self.books:
+        for n, book in enumerate(self.books, start=1):
             self.reviews[str(book)] = {
                 'avg': 0,
                 'reviews': list(),
                 'number_of_reviews':int()
             }
-            number_of_reviews = random.randrange(1,5)
-            for _ in range(number_of_reviews):
+            self.reviews[str(book)]['number_of_reviews'] = n
+            for _ in range(n):
                 rate = random.randrange(0, 5)
                 review = Review(book=book, review=rate)
                 review.save()
                 self.reviews[str(book)]['reviews'].append(review)
                 self.reviews[str(book)]['avg'] += rate
-            self.reviews[str(book)]['avg'] /= number_of_reviews
-            self.reviews[str(book)]['number_of_reviews'] = number_of_reviews
+            self.reviews[str(book)]['avg'] /= n
 
     def test_average_rating(self):
-        for car in self.cars:
+        for book in self.books:
             self.assertEqual(book.average_rating(), 
                              self.reviews[str(book)]['avg'])
 
     def test_average_no_reviews(self):
-        book = Book(author='J.R.R. Tolkien', title='The Hobbit')
+        book = Book(author='Cixin Liu', title="Death's End")
         book.save()
         self.assertIsNone(book.average_rating())
 
@@ -69,9 +68,9 @@ class BookReviewTestCase(TestCase):
                              self.reviews[str(book)]['number_of_reviews'])
 
     def test_popular(self):
-        popular = Car.most_popular()
+        popular = Book.most_popular()
         self.assertEqual(len(popular), 5)
-        self.assertListEqual(list(popular), self.cars[:5])
-        self.assertEqual(type(popular), type(Car.objects.all()))
+        self.assertListEqual(list(popular), self.books[::-1])
+        self.assertEqual(type(popular), type(Book.objects.all()))
 
     
