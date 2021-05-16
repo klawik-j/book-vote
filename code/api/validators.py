@@ -5,7 +5,10 @@ import json
 from django.core.exceptions import ValidationError
 
 def validate_book(author: str, title: str) -> Tuple[str, str]:
-
+    """Validate if book exists via http://openlibrary.org/
+    Ignores letter casing.
+    Returns book author and title
+    """
     url = "http://openlibrary.org/search.json?author={author}&title={title}".format(author=author, title=title).replace(" ", "%20")
     book_data = urllib.request.urlopen(url).read()
     book_data = json.loads(book_data)

@@ -7,6 +7,8 @@ from api.validators import validate_book
 # Create your models here.
 class Book(models.Model):
     """Book model that holds an author and title.
+    Validates and replaces `author` and `title` fields
+    using :validators:`api.validate_book`
     """
     author = models.CharField(_("Book author name"), max_length=64)
     title = models.CharField(_("Book title"), max_length=64)
@@ -35,6 +37,13 @@ class Book(models.Model):
 
     @staticmethod
     def most_popular(n=5):
+        """Return most popular books based on
+        number of reviews.
+
+        Key arguments:
+
+        n(int) -- number of top books returned, default 5
+        """
         books = Book.objects.annotate(review_number=models.Count('reviews'))
         books_sorted = books.order_by('-review_number')
         return books_sorted[:n]
@@ -46,7 +55,7 @@ class Book(models.Model):
         return self.reviews.count()
 
 class Review(models.Model):
-    """Review model for :models:`api.Car`.
+    """Review model for :models:`api.Review`.
     Validates `review` to check if value is beween 0 and 5.
     """
     book = models.ForeignKey(Book,

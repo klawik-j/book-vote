@@ -5,8 +5,12 @@ from api.models import Book, Review
 from api.serializers import BookSerializer, ReviewSerializer
 # Create your views here.
 
-class BookViewSet(viewsets.ModelViewSet):
-
+class BookViewSet(  mixins.CreateModelMixin,
+                    mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet,
+                    ):
     serializer_class = BookSerializer
     queryset = Book.objects.all()
     lookup_field = 'id'
