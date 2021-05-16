@@ -39,6 +39,12 @@ class Book(models.Model):
         books_sorted = books.order_by('-review_number')
         return books_sorted[:n]
 
+    def number_of_reviews(self):
+        """
+        Return number of corresponding :models:`Review`.
+        """
+        return self.reviews.count()
+
 class Review(models.Model):
     """Review model for :models:`api.Car`.
     Validates `review` to check if value is beween 0 and 5.
