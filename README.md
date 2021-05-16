@@ -12,7 +12,7 @@ Docker and docker-compose
 - `book/<int:id>` **GET/DELETE** Returns or deletes particular book
 
 ### Reviews
-- `review` **POST** `{book: -, review: -} Creates a review, that is linked to particular book
+- `review` **POST** `{book: -, review: -}` Creates a review, that is linked to particular book
 
 ### TOP books
 - `popular` **GET** Returns top 5 most popular books based on number of reviews
