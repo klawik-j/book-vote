@@ -57,8 +57,10 @@ class BookEndpointTestCase(TestCase):
         self.assertEqual(data[0]['author'], 'J.R.R. Tolkien')
         self.assertEqual(data[0]['title'], 'The Hobbit')
 
-    #def test_put_code(self):
-    #    response = client.put(self.url)
-    #    self.assertEqual(response.status_code, 405)
+    def test_put_code(self):
+        response = client.put(self.url)
+        self.assertEqual(response.status_code, 405)
 
-    
+    def test_delete_code(self):
+        response = client.delete(self.url)
+        self.assertEqual(response.status_code, 405)
