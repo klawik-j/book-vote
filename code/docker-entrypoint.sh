@@ -44,4 +44,4 @@ echo 'Run command'
 echo $@
 echo '--------------------------'
 echo ''
-python manage.py $@ || exit 1
+$@ || exit 1

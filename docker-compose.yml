@@ -13,7 +13,7 @@ services:
     container_name: book_back
     restart: unless-stopped
     ports: 
-      - "${DJANGO_PORT}:8080"
+      - "${DJANGO_PORT}:8000"
     env_file: 
       - .env
     volumes: 
@@ -23,4 +23,4 @@ services:
     links:
       - book_db:book_db
     entrypoint: "bash /code/docker-entrypoint.sh"
-    command: "runserver 0.0.0.0:8080"
+    command: "gunicorn -b 0.0.0.0:8000  config.wsgi"

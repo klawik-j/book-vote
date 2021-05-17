@@ -12,5 +12,5 @@ RUN apt-get update
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python3", "manage.py"]
+ENTRYPOINT ["bash", "docker-entrypoint.sh"]
 CMD ["runserver", "0.0.0.0:8080"]
