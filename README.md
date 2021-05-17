@@ -1,5 +1,5 @@
 # Book voting API
-Api, handling voting on interesting books, utilizes DRF
+Api, handling voting on interesting books, utilizes DRF. Hosted on [HEROKU](https://afternoon-ocean-28258.herokuapp.com/)
 ## Requirements
 Docker and docker-compose
 # How to launch
