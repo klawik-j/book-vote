@@ -5,6 +5,8 @@ services:
     image: postgres:latest
     restart: unless-stopped
     container_name: book_postgres
+    volumes: 
+      - book_postgres:/var/lib/postgresql/data
     env_file: 
       - .env
     
@@ -20,7 +22,6 @@ services:
       - ./code:/code
     depends_on: 
       - book_db
-    links:
-      - book_db:book_db
-    entrypoint: "bash /code/docker-entrypoint.sh"
-    command: "gunicorn -b 0.0.0.0:8000  config.wsgi"
+
+volumes:
+  book_postgres:
