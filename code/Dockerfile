@@ -5,12 +5,11 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
 
-COPY  . /code/
+COPY requirements.txt requirements.txt
 
-RUN apt-get update
+RUN apt-get update && pip install --upgrade pip && pip install -r requirements.txt
 
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY  . .
 
 ENTRYPOINT ["bash", "docker-entrypoint.sh"]
-CMD ["runserver", "0.0.0.0:8080"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000",  "config.wsgi"]
