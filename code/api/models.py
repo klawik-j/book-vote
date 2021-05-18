@@ -21,12 +21,6 @@ class Book(models.Model):
 
     def clean(self):
         return validate_book(self.author, self.title)
-
-    def save(self, *args, **kwargs):
-        new_author, new_title = self.clean()
-        self.author = new_author
-        self.title = new_title
-        super(Book, self).save(*args, **kwargs)
     
     def average_rating(self):
         """
