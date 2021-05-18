@@ -25,7 +25,7 @@ python manage.py migrate || exit 1
 
 echo ''
 echo '--------------------------'
-echo 'Run test'
+echo 'Collect static'
 echo '--------------------------'
 echo ''
 python manage.py collectstatic --noinput
