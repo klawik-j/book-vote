@@ -28,7 +28,7 @@ echo '--------------------------'
 echo 'Run test'
 echo '--------------------------'
 echo ''
-python manage.py test --noinput
+python manage.py collectstatic --noinput
 
 
 echo ''
