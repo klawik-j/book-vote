@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from api.models import Book, Review
 
+
 class BookModelTestCase(TestCase):
     def setUp(self):
         self.book = Book(author='J.R.R. Tolkien', title='The Hobbit')
@@ -23,9 +24,10 @@ class BookModelTestCase(TestCase):
             self.book.title = "Not a book tiitle"
             self.book.full_clean()
 
+
 class BookReviewTestCase(TestCase):
     def setUp(self):
-        #Create books list and save it
+        # Create books list and save it
         self.books = [
             Book(author='J.R.R. Tolkien', title='The Hobbit'),
             Book(author='Fyodor Dostoevsky', title='Crime and Punishment'),
@@ -35,13 +37,13 @@ class BookReviewTestCase(TestCase):
         ]
         [book.save() for book in self.books]
 
-        #Create a dictionary contain n number of random reviews bound to book
+        # Create a dictionary contain n number of random reviews bound to book
         self.reviews = dict()
         for n, book in enumerate(self.books, start=1):
             self.reviews[str(book)] = {
                 'avg': 0,
                 'reviews': list(),
-                'number_of_reviews':int()
+                'number_of_reviews': int(),
             }
             self.reviews[str(book)]['number_of_reviews'] = n
             for _ in range(n):
@@ -54,8 +56,7 @@ class BookReviewTestCase(TestCase):
 
     def test_average_rating(self):
         for book in self.books:
-            self.assertEqual(book.average_rating(), 
-                             self.reviews[str(book)]['avg'])
+            self.assertEqual(book.average_rating(), self.reviews[str(book)]['avg'])
 
     def test_average_no_reviews(self):
         book = Book(author='Cixin Liu', title="Death's End")
@@ -64,13 +65,12 @@ class BookReviewTestCase(TestCase):
 
     def test_review_count(self):
         for book in self.books:
-            self.assertEqual(book.number_of_reviews(), 
-                             self.reviews[str(book)]['number_of_reviews'])
+            self.assertEqual(
+                book.number_of_reviews(), self.reviews[str(book)]['number_of_reviews']
+            )
 
     def test_popular(self):
         popular = Book.most_popular()
         self.assertEqual(len(popular), 5)
         self.assertListEqual(list(popular), list(reversed(self.books)))
         self.assertEqual(type(popular), type(Book.objects.all()))
-
-    

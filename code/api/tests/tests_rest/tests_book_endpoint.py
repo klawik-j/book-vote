@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError
 
 client = APIClient()
 
+
 class BookEndpointTestCase(TestCase):
     def setUp(self):
         self.url = reverse('book-list')
@@ -21,27 +22,25 @@ class BookEndpointTestCase(TestCase):
             Review.objects.create(book=book, review=2)
 
     def test_post_wrong_book(self):
-        response = client.post( self.url,
-                                {'author': 'Gimli',
-                                'title': 'The Dwarf'})
+        response = client.post(self.url, {'author': 'Gimli', 'title': 'The Dwarf'})
         self.assertEqual(response.status_code, 400)
-    
+
     def test_post_duplicate_book(self):
-        response = client.post(self.url,
-                    {'author': 'J.R.R. Tolkien',
-                    'title': 'The Hobbit'})
+        response = client.post(
+            self.url, {'author': 'J.R.R. Tolkien', 'title': 'The Hobbit'}
+        )
         self.assertEqual(response.status_code, 400)
 
     def test_post_code(self):
-        response = client.post( self.url,
-                                {'author': 'Cixin Liu',
-                                'title': "Death's End"})
+        response = client.post(
+            self.url, {'author': 'Cixin Liu', 'title': "Death's End"}
+        )
         self.assertEqual(response.status_code, 201)
 
     def test_post_data(self):
-        response = client.post( self.url,
-                                {'author': 'Cixin Liu',
-                                'title': "Death's End"})
+        response = client.post(
+            self.url, {'author': 'Cixin Liu', 'title': "Death's End"}
+        )
         data = response.data
         self.assertIsNotNone(data['id'])
         self.assertEqual(data['author'], 'Cixin Liu')
@@ -51,8 +50,9 @@ class BookEndpointTestCase(TestCase):
         response = client.get(self.url)
         data = response.data
         self.assertEqual(len(self.books), len(data))
-        self.assertCountEqual(data[0].keys(),
-                             ['id', 'author', 'title', 'average_rating'])
+        self.assertCountEqual(
+            data[0].keys(), ['id', 'author', 'title', 'average_rating']
+        )
         self.assertEqual(data[0]['average_rating'], '2.0')
         self.assertEqual(data[0]['author'], 'J.R.R. Tolkien')
         self.assertEqual(data[0]['title'], 'The Hobbit')
@@ -65,12 +65,11 @@ class BookEndpointTestCase(TestCase):
         response = client.delete(self.url)
         self.assertEqual(response.status_code, 405)
 
-class BookDetailEndpointTestCase(TestCase):
 
+class BookDetailEndpointTestCase(TestCase):
     def setUp(self):
         self.book = Book.objects.create(author='J.R.R. Tolkien', title='The Hobbit')
-        self.url = reverse('book-detail',
-                            kwargs={'id': self.book.id})
+        self.url = reverse('book-detail', kwargs={'id': self.book.id})
 
     def test_get_code(self):
         response = client.get(self.url)
@@ -79,13 +78,10 @@ class BookDetailEndpointTestCase(TestCase):
     def test_get_data(self):
         response = client.get(self.url)
         data = response.data
-        self.assertCountEqual(data.keys(),
-                             ['id', 'author', 'title', 'average_rating'])
+        self.assertCountEqual(data.keys(), ['id', 'author', 'title', 'average_rating'])
         self.assertEqual(data['author'], 'J.R.R. Tolkien')
         self.assertEqual(data['title'], 'The Hobbit')
 
     def test_delete(self):
         response = client.delete(self.url)
         self.assertEqual(response.status_code, 204)
-    
-    

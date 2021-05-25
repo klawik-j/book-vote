@@ -10,6 +10,7 @@ class Book(models.Model):
     Validates and replaces `author` and `title` fields
     using :validators:`api.validate_book`
     """
+
     author = models.CharField(_("Book author name"), max_length=64)
     title = models.CharField(_("Book title"), max_length=64)
 
@@ -21,13 +22,12 @@ class Book(models.Model):
 
     def clean(self):
         return validate_book(self.author, self.title)
-    
+
     def average_rating(self):
         """
         Return average rating based on :models:`Review`.
         """
-        return  self.reviews.all().aggregate(
-                models.Avg('review'))['review__avg']
+        return self.reviews.all().aggregate(models.Avg('review'))['review__avg']
 
     @staticmethod
     def most_popular(n=5):
@@ -48,15 +48,13 @@ class Book(models.Model):
         """
         return self.reviews.count()
 
+
 class Review(models.Model):
     """Review model for :models:`api.Review`.
     Validates `review` to check if value is beween 0 and 5.
     """
-    book = models.ForeignKey(Book,
-                            on_delete=models.CASCADE,
-                            related_name="reviews")
-    review = models.IntegerField(_("Ratin from 0 to 5"),
-                                validators=[
-                                    MinValueValidator(0),
-                                    MaxValueValidator(5)
-                                ])
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
+    review = models.IntegerField(
+        _("Ratin from 0 to 5"), validators=[MinValueValidator(0), MaxValueValidator(5)]
+    )

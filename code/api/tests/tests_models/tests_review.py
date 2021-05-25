@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from api.models import Book, Review
 
+
 class ReviewModelTestCase(TestCase):
     def setUp(self):
         self.book = Book(author='J.R.R. Tolkien', title='The Hobbit')
@@ -16,7 +17,7 @@ class ReviewModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             self.review.review = -1
             self.review.full_clean()
-    
+
     def test_review_high_validation(self):
         with self.assertRaises(ValidationError):
             self.review.review = 6

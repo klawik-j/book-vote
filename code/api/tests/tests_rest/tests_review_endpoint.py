@@ -16,20 +16,14 @@ class ReviewEndpointTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
     def test_post_code(self):
-        response = client.post( self.url,
-                                {'book': self.book.id,
-                                'review': '4'})
+        response = client.post(self.url, {'book': self.book.id, 'review': '4'})
         self.assertEqual(response.status_code, 201)
 
     def test_post_wrong(self):
-        response = client.post( self.url,
-                                {'book': self.book.id,
-                                'review': '6'})
+        response = client.post(self.url, {'book': self.book.id, 'review': '6'})
         self.assertEqual(response.status_code, 400)
 
     def test_post_data(self):
-        response = client.post( self.url,
-                                {'book': self.book.id,
-                                'review': '4'})
+        response = client.post(self.url, {'book': self.book.id, 'review': '4'})
         self.assertIsNotNone(response.data['book'])
         self.assertIsNotNone(response.data['review'])
